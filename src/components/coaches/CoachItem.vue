@@ -7,8 +7,10 @@
     <span v-for="area in areas" :key="area">{{ area }}</span>
   </div>
   <div class="actions">
-    <router-link :to="coachContactLink">Contact</router-link>
-    <router-link :to="coachDetailsLink">View Details</router-link>
+    <base-button mode="outline" link :to="coachContactLink"
+      >Contact</base-button
+    >
+    <base-button link :to="coachDetailsLink">View Details</base-button>
   </div>
 </template>
 
@@ -17,16 +19,16 @@ export default {
   props: ['id', 'firstName', 'lastName', 'rate', 'areas'],
   computed: {
     fullName() {
-      return this.firstName + ' ' + this.lastName
+      return this.firstName + ' ' + this.lastName;
     },
     coachContactLink() {
-      return this.$route.path + '/' + this.id + '/contact'
+      return this.$route.path + '/' + this.id + '/contact';
     },
     coachDetailsLink() {
-      return this.$route.path + '/' + this.id
+      return this.$route.path + '/' + this.id;
     }
   }
-}
+};
 </script>
 
 <style scoped>
