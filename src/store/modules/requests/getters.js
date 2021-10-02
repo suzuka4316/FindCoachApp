@@ -4,6 +4,6 @@ export default {
     return state.requests.filter(req => req.coachId === coachId)
   },
   hasRequests(_, getters) {
-    return getters.requests && state.requests.length > 0
+    return getters.requests && getters.requests.length > 0
   }
 }
