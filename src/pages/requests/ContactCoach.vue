@@ -37,6 +37,13 @@ export default {
         this.formIsValid = false;
         return;
       }
+      this.$store.dispatch('requests/contactCoach', {
+        email: this.email,
+        message: this.message,
+        // ContactCoach is a child router of CoachDetail, thus we can access coach id
+        coachId: this.$route.params.id,
+      })
+      this.$router.replace('/coaches')
     }
   }
 };
