@@ -12,8 +12,10 @@ export default {
       method: 'PUT', //update if user already exists in backend
       body: JSON.stringify(coachData)
     })
+    const responseData = await response.json()
     if (!response.ok) {
-      // error...
+      const error = new Error(responseData.message || "Failed to save!")
+      throw error
     }
     context.commit('registerCoach', {
       ...coachData,
