@@ -4,7 +4,11 @@ import actions from './actions.js'
 
 export default {
   namespaced: true,
-  state() {},
+  state() {
+    return {
+      requests: []
+    }
+  },
   getters,
   mutations,
   actions
