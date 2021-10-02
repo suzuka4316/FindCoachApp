@@ -10,7 +10,7 @@ export const store = new Vuex.Store({
   },
   state() {
     return {
-      userId: 'c3'
+      userId: 'c1'
     }
   },
   getters: {
