@@ -22,7 +22,10 @@ export default {
       id: userId
     })
   },
-  async loadCoaches(context) {
+  async loadCoaches(context, payload) {
+    if (!payload.forceRefresh && !context.getters.shouldUpdate) {
+      return // do not send GET request if the last request was sent less than 1 min ago
+    }
     const response = await fetch(`https://vue-http-demo-bc6fe-default-rtdb.firebaseio.com/coaches.json`)
     const responseData = await response.json()
     if (!response.ok) {
@@ -42,5 +45,6 @@ export default {
       coaches.push(coach)
     }
     context.commit('setCoaches', coaches)
+    context.commit('setFetchTimestamp')
   }
 }
