@@ -1,14 +1,20 @@
-# Name
-**Find My Coach app**
 
-# Main Features
+# Find My Coach
+
+## Main Features
 - Signup or Login
 - Browse coaches and filter them by their expertise
 - Send coaching request to a specific coach
 - Register yourself as a coach
 - Browse all the requests sent to you
 
-# Authentication
+## Debug
+Running in development mode
+```
+npm run serve
+```
+
+## Authentication
 This app focuses on the frontend (Vue), and uses Firebase service for the backend functionalities.
 In Firebase, realtime database are configured as followed:
 ```
