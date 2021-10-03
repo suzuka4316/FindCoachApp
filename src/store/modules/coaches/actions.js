@@ -1,38 +1,46 @@
 export default {
   async registerCoach(context, data) {
-    const userId = context.rootGetters.userId
+    const userId = context.rootGetters.userId;
     const coachData = {
       firstName: data.first,
       lastName: data.last,
       description: data.desc,
       hourlyRate: data.rate,
       areas: data.areas
-    }
-    const response = await fetch(`https://vue-http-demo-bc6fe-default-rtdb.firebaseio.com/coaches/${userId}.json`, {
-      method: 'PUT', //update if user already exists in backend
-      body: JSON.stringify(coachData)
-    })
-    const responseData = await response.json()
+    };
+    const token = context.rootGetters.token;
+    // you can add the auth token to the request when you add the query parameter at the end of the url (?auth=[authToken])
+    const response = await fetch(
+      `https://vue-http-demo-bc6fe-default-rtdb.firebaseio.com/coaches/${userId}.json?auth=` +
+        token,
+      {
+        method: 'PUT', //update if user already exists in backend
+        body: JSON.stringify(coachData)
+      }
+    );
+    const responseData = await response.json();
     if (!response.ok) {
-      const error = new Error(responseData.message || "Failed to save!")
-      throw error
+      const error = new Error(responseData.message || 'Failed to save!');
+      throw error;
     }
     context.commit('registerCoach', {
       ...coachData,
       id: userId
-    })
+    });
   },
   async loadCoaches(context, payload) {
     if (!payload.forceRefresh && !context.getters.shouldUpdate) {
-      return // do not send GET request if the last request was sent less than 1 min ago
+      return; // do not send GET request if the last request was sent less than 1 min ago
     }
-    const response = await fetch(`https://vue-http-demo-bc6fe-default-rtdb.firebaseio.com/coaches.json`)
-    const responseData = await response.json()
+    const response = await fetch(
+      `https://vue-http-demo-bc6fe-default-rtdb.firebaseio.com/coaches.json`
+    );
+    const responseData = await response.json();
     if (!response.ok) {
-      const error = new Error(responseData.message || "Failed to fetch!")
-      throw error
+      const error = new Error(responseData.message || 'Failed to fetch!');
+      throw error;
     }
-    const coaches = []
+    const coaches = [];
     for (const key in responseData) {
       const coach = {
         id: key,
@@ -40,11 +48,11 @@ export default {
         lastName: responseData[key].lastName,
         description: responseData[key].description,
         hourlyRate: responseData[key].hourlyRate,
-        areas: responseData[key].areas,
-      }
-      coaches.push(coach)
+        areas: responseData[key].areas
+      };
+      coaches.push(coach);
     }
-    context.commit('setCoaches', coaches)
-    context.commit('setFetchTimestamp')
+    context.commit('setCoaches', coaches);
+    context.commit('setFetchTimestamp');
   }
-}
+};
