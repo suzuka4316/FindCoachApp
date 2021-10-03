@@ -1,5 +1,5 @@
 
-# Find My Coach ![alt text](https://fonts.google.com/icons?selected=Material%20Icons%20Outlined%3Acode%3A)
+# Find My Coach
 
 ## Main Features
 - Signup or Login
