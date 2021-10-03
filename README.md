@@ -26,6 +26,7 @@ Firebase hosting is used for this app
 npm install -g firebase-tools
 firebase login
 firebase init
+firebase deploy
 ```
 
 ## Authentication
