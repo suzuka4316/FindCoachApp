@@ -18,14 +18,14 @@ npm run serve
 Building for production
 ```
 npm run build
-firebase login
-firebase init
 ```
 
 ## Deploy
 Firebase hosting is used for this app
 ```
 npm install -g firebase-tools
+firebase login
+firebase init
 ```
 
 ## Authentication
