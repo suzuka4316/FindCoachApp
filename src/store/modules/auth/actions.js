@@ -20,8 +20,8 @@ export default {
       throw error;
     }
     context.commit('setUser', {
-      token: responseData.idToken,
-      userId: responseData.localId,
+      token: responseData.idToken, // A Firebase Auth ID token for the authenticated user
+      userId: responseData.localId, // The uid of the authenticated user
       tokenExpiration: responseData.expiresIn
     });
   },
@@ -48,9 +48,9 @@ export default {
     }
     console.log(responseData);
     context.commit('setUser', {
-      token: responseData.idToken,
-      userId: responseData.localId,
-      tokenExpiration: responseData.expiresIn
+      token: responseData.idToken, // A Firebase Auth ID token for the newly created user
+      userId: responseData.localId, // The uid of the newly created user
+      tokenExpiration: responseData.expiresIn // The number of seconds in which the ID token expires
     });
   }
 };
