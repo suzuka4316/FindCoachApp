@@ -1,8 +1,27 @@
 export default {
-  // https://firebase.google.com/docs/reference/rest/auth#section-sign-in-email-password
   async login(context, payload) {
+    return context.dispatch('auth', {
+      ...payload,
+      mode: 'login'
+    })
+  },
+  async signup(context, payload) {
+    return context.dispatch('auth', {
+      ...payload,
+      mode: 'signup'
+    })
+  },
+  async auth(context, payload) {
+    const mode = payload.mode
+    // https://firebase.google.com/docs/reference/rest/auth#section-sign-in-email-password
+    let url = `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBsSxptF79dnDk0b0NLRCrm3wMivLAQ6uk`
+    if (mode == 'signup') {
+      // https://firebase.google.com/docs/reference/rest/auth#section-create-email-password
+      url = `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=
+      AIzaSyBsSxptF79dnDk0b0NLRCrm3wMivLAQ6uk`
+    }
     const response = await fetch(
-      `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBsSxptF79dnDk0b0NLRCrm3wMivLAQ6uk`,
+      url,
       {
         method: 'POST',
         body: JSON.stringify({
@@ -19,39 +38,32 @@ export default {
       );
       throw error;
     }
+
+    /**
+     * Also store response data to brower's localStorage.
+     * If we store data only in Vuex, when the browser is refreshed,
+     * Vue app is restarted and we lose the auth state
+     */
+    localStorage.setItem('token', responseData.idToken)
+    localStorage.setItem('userId', responseData.localId)
+
     context.commit('setUser', {
       token: responseData.idToken, // A Firebase Auth ID token for the authenticated user
       userId: responseData.localId, // The uid of the authenticated user
       tokenExpiration: responseData.expiresIn
     });
   },
-  // https://firebase.google.com/docs/reference/rest/auth#section-create-email-password
-  async signup(context, payload) {
-    const response = await fetch(
-      `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=
-    AIzaSyBsSxptF79dnDk0b0NLRCrm3wMivLAQ6uk`,
-      {
-        method: 'POST',
-        body: JSON.stringify({
-          email: payload.email,
-          password: payload.password,
-          returnSecureToken: true
-        })
-      }
-    );
-    const responseData = await response.json();
-    if (!response.ok) {
-      const error = new Error(
-        responseData.message || 'Failed to authenticate. Check your login data.'
-      );
-      throw error;
+  // Dispatch tryLogin whenever Vue app restarts
+  tryLogin(context) {
+    const token = localStorage.getItem('token')
+    const userId = localStorage.getItem('userId')
+    if (token && userId) {
+      context.commit('setUser', {
+        token: token,
+        userId: userId,
+        tokenExpiration: null
+      })
     }
-    console.log(responseData);
-    context.commit('setUser', {
-      token: responseData.idToken, // A Firebase Auth ID token for the newly created user
-      userId: responseData.localId, // The uid of the newly created user
-      tokenExpiration: responseData.expiresIn // The number of seconds in which the ID token expires
-    });
   },
   /**
    * No need to send request to backend
