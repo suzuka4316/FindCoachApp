@@ -14,6 +14,12 @@ Running in development mode
 npm run serve
 ```
 
+## Build
+Building for production
+```
+npm run build
+```
+
 ## Authentication
 This app focuses on the frontend (Vue), and uses Firebase service for the backend functionalities.
 In Firebase, realtime database are configured as followed:
