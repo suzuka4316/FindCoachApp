@@ -52,5 +52,18 @@ export default {
       userId: responseData.localId, // The uid of the newly created user
       tokenExpiration: responseData.expiresIn // The number of seconds in which the ID token expires
     });
+  },
+  /**
+   * No need to send request to backend
+   * because it does not hold any info about fed.
+   * It does not care what is happening to fed.
+   * This is how authentication works for SPA.
+   */
+  logout(context) {
+    context.commit('setUser', {
+      token: null,
+      userId: null,
+      tokenExpiration: null
+    })
   }
 };
